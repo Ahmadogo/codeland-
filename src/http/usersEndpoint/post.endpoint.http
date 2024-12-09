@@ -1,0 +1,18 @@
+POST http://localhost:3000/users
+Content-Type: application/json
+ {
+        "firstName": "Hauwa'u",
+        "lastName": "Muhammad",
+        "email": "muhammadhauwa@gmail.com",
+        "password": "Hauwa@01",
+        "address" : "Malalin-gabas, kaduna",
+        "isAuth": true
+      },
+      {
+        "firstName": "Ahmad",
+        "lastName": "Abdulkareem",
+        "email": "ahmadabdulkareem@gmail.com",
+        "password": "Abdulkareem@01",
+        "address" : "Unguwan rimi, kaduna",
+        // "isAuth": true
+      }

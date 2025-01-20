@@ -1,15 +1,29 @@
-import { Controller, Post, Body, Req } from '@nestjs/common';
-import { Request } from 'express';
+import { Controller, Get, Post, Body, Param, Delete, Patch } from '@nestjs/common';
+import { PostService } from './providers/post.service';
+import { PostParamDto } from './dto/create-post.dto';
+import { PatchPostDto } from './dto/patch-post.dto';
 
-@Controller('post')
+@Controller('posts')
 export class PostController {
-  @Post()
-  public createPost(@Body() body: any) {
+  constructor(private readonly postService: PostService) {}
 
-    console.log(body);
-    return {
-      message: 'Request sent to post new user',
-      body: body,
-    };
+  @Get()
+  public findAllPosts() {
+    return this.postService.findAllPosts();
+  }
+
+  @Post()
+  public createPost(@Body() createPostDto: PostParamDto) {
+    return this.postService.createPost(createPostDto);
+  }
+
+  @Patch()
+  public editPost(@Body() patchPostDto:PatchPostDto) {
+    return this.postService.editPost(patchPostDto)
+  }
+
+  @Delete(':id')
+  public deletePost(@Param('id') id: number) {
+    return this.postService.deletePost(id);
   }
 }

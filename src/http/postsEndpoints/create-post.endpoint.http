@@ -1,0 +1,18 @@
+POST http://localhost:3000/posts
+Content-Type: application/json
+{
+    "id": ,
+    "title": "London derby",
+    "authorId": 1,
+    "postType": "series",
+    "postStatus": "published",
+    "content": "Blues beats bees",
+    "tags": [1],
+    "publishedDate": "2024-12-16T00:00:00.000Z",
+    "metaOptions": {"metaValue": "{\"sidebar\": true}"}
+    
+}
+
+
+GET http://localhost:3000/posts/
+    

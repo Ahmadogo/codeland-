@@ -7,10 +7,10 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
-import { AuthService } from './providers/auth.service';
+
 import { SignInDto } from './dto/signIn.dto';
+import { AuthService } from './providers/auth.service';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -19,6 +19,10 @@ export class AuthController {
   @Post('/sign-in')
   public async signIn(@Body() signInDto: SignInDto) {
     return await this.authService.SignIn(signInDto);
+  }
+
+  public async refreshToken (refreshTokenDto: RefreshTokenDto) {
+    return this.authService.refreshToken(refreshTokenDto)
   }
 }
 

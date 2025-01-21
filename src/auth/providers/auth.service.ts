@@ -4,6 +4,9 @@ import { UpdateAuthDto } from '../dto/update-auth.dto';
 import { UserService } from 'src/users/providers/user.services';
 import { SignInDto } from '../dto/signIn.dto';
 import { SignInProvider } from './sign-in.provider';
+import { GenerateTokensProvider } from './generate-tokens.provider';
+import { RefreshTokenDto } from '../dto/refresh-token.dto';
+import { RefreshTokensProvider } from './refresh-tokens.provider';
 
 @Injectable()
 export class AuthService {
@@ -12,10 +15,16 @@ export class AuthService {
     private readonly userService: UserService,
 
     private readonly signInProvider: SignInProvider,
+
+    private readonly refreshTokenProvider: RefreshTokensProvider
   ) {}
 
   public async  SignIn(signInDto: SignInDto) {
     return this.signInProvider.SignIn(signInDto);
+  }
+
+  public async refreshToken( refreshTokenDto: RefreshTokenDto) {
+    return this.refreshTokenProvider.refreshToken(refreshTokenDto)
   }
 
   // create(createAuthDto: CreateAuthDto) {

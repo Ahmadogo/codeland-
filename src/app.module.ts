@@ -47,10 +47,10 @@ import { JwtModule } from '@nestjs/jwt';
   ],
   providers: [
     AppService,
-    {
-      provide: APP_GUARD,
-      useClass: AccessTokenGuard 
-    }
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AccessTokenGuard 
+    // }
   ],
 })
 export class AppModule {}

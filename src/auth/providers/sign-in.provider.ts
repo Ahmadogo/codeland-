@@ -8,11 +8,7 @@ import {
 import { UserService } from 'src/users/providers/user.services';
 import { SignInDto } from '../dto/signIn.dto';
 import { HashingProvider } from './hashing.provider';
-import { User } from 'src/users/user.entity';
-import { CreateUserDto } from 'src/users/dto/create-user.dto';
-import jwtConfig from '../config/jwt.config';
-import { JwtService } from '@nestjs/jwt';
-import { ConfigType } from '@nestjs/config';
+import { GenerateTokensProvider } from './generate-tokens.provider';
 
 @Injectable()
 export class SignInProvider {
@@ -22,10 +18,7 @@ export class SignInProvider {
 
     private readonly hashingProvider: HashingProvider, //dependency injection of hashingProvider
 
-    private readonly jwtService: JwtService, //dependency injection of jwtService
-
-    @Inject(jwtConfig.KEY)
-    private readonly jwtConfigurations: ConfigType<typeof jwtConfig>, //dependency injection of jwtConfigurations
+    private readonly generateTokenProvider: GenerateTokensProvider,
   ) {}
 
   public async SignIn(signInDto: SignInDto) {
@@ -51,17 +44,6 @@ export class SignInProvider {
       throw new UnauthorizedException('email/password misMatch');
     }
 
-    const access_token = await this.jwtService.signAsync(
-      {
-        sub: user.id,
-        email: user.email,
-      },
-      {
-        audience: this.jwtConfigurations.audience,
-        issuer: this.jwtConfigurations.issuer,
-        expiresIn: this.jwtConfigurations.ttl,
-      },
-    );
-    return { access_token };
+    return await this.generateTokenProvider.generateToken(user);
   }
 }

@@ -37,7 +37,6 @@ export class UsersController {
       status: 200,
       description: "users fetched succesfully based on the query"
     })
-  // @UseGuards(AccessTokenGuard)  //this guard our whole tokens 
   @Get('/:id?/')
   @ApiQuery({
     name: 'limit',

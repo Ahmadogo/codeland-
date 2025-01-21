@@ -21,11 +21,7 @@ import { AccessTokenGuard } from 'src/auth/guard/access-token/access-token.guard
     JwtModule.registerAsync(jwtConfig.asProvider()) //register the jwt module
   ],
   controllers: [UsersController],
-  providers: [UserService, CreateUserProvider, FindOneByEmail, {
-
-    provide: APP_GUARD,
-    useClass: AccessTokenGuard    //this generalizes our guards to protect everything in users module
-  }],
+  providers: [UserService, CreateUserProvider, FindOneByEmail],
   exports: [UserService, TypeOrmModule, FindOneByEmail],
 })
 export class UsersModule {}

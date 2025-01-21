@@ -8,12 +8,15 @@ import { SignInProvider } from './providers/sign-in.provider';
 import jwtConfig from './config/jwt.config';
 import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { GenerateTokensProvider } from './providers/generate-tokens.provider';
+import { RefreshTokensProvider } from './providers/refresh-tokens.provider';
+
 
 @Module({
   imports: [
-    forwardRef(() => UsersModule),  //import the userModule as a callBack fn
+    forwardRef(() => UsersModule), //import the userModule as a callBack fn
     ConfigModule.forFeature(jwtConfig), //import jwt for security purpose
-    JwtModule.registerAsync(jwtConfig.asProvider()),  //register the jwt module
+    JwtModule.registerAsync(jwtConfig.asProvider()), //register the jwt module
   ],
   controllers: [AuthController],
   providers: [
@@ -24,6 +27,8 @@ import { JwtModule } from '@nestjs/jwt';
     },
     BcryptProvider,
     SignInProvider,
+    GenerateTokensProvider,
+    RefreshTokensProvider,
   ],
   exports: [AuthService, HashingProvider],
 })

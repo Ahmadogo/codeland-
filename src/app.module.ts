@@ -8,10 +8,13 @@ import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guard/access-token/access-token.guard';
 import jwtConfig from './auth/config/jwt.config';
 import { JwtModule } from '@nestjs/jwt';
+import { AuthTokenGuard } from './auth/guard/auth-token/auth-token.guard';
+import { DataResponseInterceptor } from './common/nterceptors/data-response/data-response.interceptor';
+import { MailModule } from './mail/mail.module';
 
 
 @Module({
@@ -40,17 +43,24 @@ import { JwtModule } from '@nestjs/jwt';
     AuthModule,
 
     ConfigModule.forFeature(jwtConfig),
-    JwtModule.registerAsync(jwtConfig.asProvider())
+    JwtModule.registerAsync(jwtConfig.asProvider()),
+    MailModule
   ],
   controllers: [
     AppController,
   ],
   providers: [
     AppService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AccessTokenGuard 
-    // }
+    {
+      provide: APP_GUARD,
+      useClass: AuthTokenGuard 
+    },
+
+    {
+      provide:APP_INTERCEPTOR ,
+      useClass:  DataResponseInterceptor
+    },
+    AccessTokenGuard
   ],
 })
 export class AppModule {}

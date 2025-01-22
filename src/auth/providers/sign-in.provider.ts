@@ -44,6 +44,8 @@ export class SignInProvider {
       throw new UnauthorizedException('email/password misMatch');
     }
 
-    return await this.generateTokenProvider.generateToken(user);
+    const tokens = await this.generateTokenProvider.generateToken(user);
+
+    return [tokens, user]
   }
 }

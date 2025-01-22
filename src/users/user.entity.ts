@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { Post } from 'src/post/post.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -16,7 +17,9 @@ export class User {
   email: string;
 
   @Column('varchar', { nullable: false })
+  @Exclude()  //this hides your password when a user is created
   password: string;
+
 
   @Column({ default: false })
   isActive: boolean;

@@ -13,6 +13,8 @@ import {
   UseGuards,
   SetMetadata,
   Header,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto'; //import the Dto  validation that  we've done
 import { ValidationPipe } from '@nestjs/common';
@@ -23,20 +25,16 @@ import { AccessTokenGuard } from 'src/auth/guard/access-token/access-token.guard
 import { enumType } from 'src/auth/enums/auth-type.enum';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 
-
-
 //http://localhost:3000/users
 
 @Controller('users')
-// @ApiTags('users')ka
 export class UsersController {
   constructor(private readonly userService: UserService) {} // injecting a dependency of a userService
   @ApiOperation({ summary: 'this fetches all users' })
-  @ApiResponse(
-    {
-      status: 200,
-      description: "users fetched succesfully based on the query"
-    })
+  @ApiResponse({
+    status: 200,
+    description: 'users fetched succesfully based on the query',
+  })
   @Get('/:id?/')
   @ApiQuery({
     name: 'limit',
@@ -59,24 +57,20 @@ export class UsersController {
     console.log(page);
 
     if (getUserParamDto) {
-      return this.userService.findOneById(getUserParamDto.id)
+      return this.userService.findOneById(getUserParamDto.id);
     }
     return this.userService.findAll();
   }
 
   @Post()
-  @ApiOperation({summary : "this makes a new post"})
-  // @SetMetadata("authType", "None")
+  @UseInterceptors(ClassSerializerInterceptor) // Hides password when a user is created
+  @ApiOperation({ summary: 'this makes a new post' })
   @Auth(enumType.None)
   public createtUsers(
     @Body() createtUserDto: CreateUserDto, //using the validation dto as the body type
-    // @Headers() header: any
+   
   ) {
-    console.log(createtUserDto); //getting an IP address of a user
-    console.log(typeof createtUserDto);
-    console.log(createtUserDto instanceof CreateUserDto);
-    // return { mesage: 'Request sent to post new user', body: createtUserDto };
-    return this.userService.createUser(createtUserDto)
+    return this.userService.createUser(createtUserDto);
   }
 
   @Patch()
